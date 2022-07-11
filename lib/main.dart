@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talkback/feedbackWidget/feedBackWidget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,8 +37,8 @@ class MyHomePage extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       body: Container(alignment: Alignment.center,
-      color: Colors.red.shade100,
-        child: const Text('Press'),
+      color: Colors.green.shade300,
+        child: const FeedBackWidget(),
 
       ),
     );
