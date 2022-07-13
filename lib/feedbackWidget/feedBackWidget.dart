@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:talkback/feedbackWidget/inside_overlay.dart';
 
 class FeedBackWidget extends StatefulWidget {
   const FeedBackWidget({Key? key}) : super(key: key);
@@ -32,6 +33,13 @@ class FeedBackWidgetState extends State<FeedBackWidget>
     overlayState = Overlay.of(context)!;
   }
 
+  Future<void> onDone() async {
+  await _controller.reverse();
+  if (overlayState.mounted) {
+  overlayEntry.remove();
+  }
+}
+
   OverlayEntry getOverLay() {
     return OverlayEntry(
         builder: (overlayContext) {
@@ -45,38 +53,11 @@ class FeedBackWidgetState extends State<FeedBackWidget>
                   child: SafeArea(
                     child: Padding(
                       padding: const EdgeInsets.all(30),
-                      child: LayoutBuilder(builder: (ctx,cons){
-                        return
-                            Column(
-                              children: [
-                                Container(
-                                  height: cons.maxHeight-100,
-                                  width: cons.maxWidth,color: Colors.pink.shade200,
-                                  child: const SingleChildScrollView(
-                                    child: Text('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'),
-                                  ),
-                                ),
-                                Container(height: 50,),
-                                Container(color:Colors.white,height: 50,width: cons.maxWidth,child:
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: const Text('Record Again!')),
-                                    TextButton(
-                                        onPressed: () async {
-                                          await _controller.reverse();
-                                          if (overlayState.mounted) {
-                                            overlayEntry.remove();
-                                          }
-                                        },
-                                        child: const Text('OK')),
-                                  ],
-                                ),)
-                              ],
-                            );
-                      },),
+                      child: LayoutBuilder(
+                        builder: (ctx, cons) {
+                          return InsideOverlay(boxConstraints: cons,onpressed: onDone,);
+                        },
+                      ),
                     ),
                   )),
             ),
@@ -87,7 +68,6 @@ class FeedBackWidgetState extends State<FeedBackWidget>
 
   @override
   Widget build(BuildContext context) {
-    print('dd');
     return GestureDetector(
         onTap: () {
           showOverlay(context);
