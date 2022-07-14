@@ -22,11 +22,6 @@ class MyClient {
   var response =await stub.hello(request);
   return response.greeting;
 
-  // request =HelloRequest();
-  // request.setField(1, "Divyanshu");
-  // request.setField(2, "Shukla");
-  // response = await stub.hello(request);
-  // print('Greeter client received: ${response.greeting}');
   } catch (e) {
     print(e);
   return 'nothing';
