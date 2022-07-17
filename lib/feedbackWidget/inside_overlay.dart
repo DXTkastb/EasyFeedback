@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:talkback/grpc_client/my_client.dart';
+import 'package:talkback/main_api/mainapi.dart';
 
 class InsideOverlay extends StatefulWidget {
   final BoxConstraints boxConstraints;
@@ -17,12 +17,22 @@ class InsideOverlay extends StatefulWidget {
 }
 
 class InsideOverlayState extends State<InsideOverlay> {
-  String str = 'a';
+  MainApi mainApi = MainApi();
+  bool userDispose = false;
+  String text = '';
 
-  void redo() {
-    setState(() {
-      str = str + str;
-    });
+  @override
+  void initState() {
+    print('init done');
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (!userDispose) {
+      mainApi.dispose();
+    }
   }
 
   @override
@@ -39,19 +49,24 @@ class InsideOverlayState extends State<InsideOverlay> {
           child: Center(
             child: SingleChildScrollView(
                 padding: const EdgeInsets.all(15),
-                child: FutureBuilder(
-                  future: MyClient.myClient.main(),
-                  builder: (futurecontext, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Text(
-                        snapshot.data as String,
-                        style: const TextStyle(
-                            decoration: TextDecoration.none,
-                            fontSize: 15,
-                            color: Colors.black),
+                child: StreamBuilder(
+                  initialData: 'Text will appear here',
+                  stream: mainApi.getStream(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.data!.compareTo('Text will appear here') == 0){
+                      return const Text(
+                        'Text will appear here',
+                        style: TextStyle(
+                            decoration: TextDecoration.none, fontSize: 14),
                       );
                     }
-                    return const CircularProgressIndicator(color: Colors.black,);
+                      text = text + snapshot.data!;
+                    return Text(
+                      text,
+                      style: const TextStyle(
+                          decoration: TextDecoration.none, fontSize: 14),
+                    );
                   },
                 )),
           ),
@@ -71,8 +86,21 @@ class InsideOverlayState extends State<InsideOverlay> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              BottomButton(onpressed: redo, text: 'Restart'),
-              BottomButton(onpressed: widget.onpressed, text: 'OK')
+              BottomButton(
+                  onpressed: () {
+                    setState(() {
+
+                      text = '';mainApi = MainApi();
+                    });
+                  },
+                  text: 'Restart'),
+              BottomButton(
+                  onpressed: () async {
+                    await mainApi.dispose();
+                    userDispose = true;
+                    widget.onpressed!();
+                  },
+                  text: 'OK')
             ],
           ),
         )
@@ -108,3 +136,21 @@ class BottomButton extends StatelessWidget {
     );
   }
 }
+
+// FutureBuilder(
+// future: mainApi.start(),
+// builder: (futurecontext, snapshot) {
+// if (snapshot.connectionState == ConnectionState.done) {
+// return const Text(
+// 'snapshot.data as String',
+// style: TextStyle(
+// decoration: TextDecoration.none,
+// fontSize: 15,
+// color: Colors.black),
+// );
+// }
+// return const CircularProgressIndicator(
+// color: Colors.black,
+// );
+// },
+// ),

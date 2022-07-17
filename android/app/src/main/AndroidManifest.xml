@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.talkback">
+    package="com.example.talkback"><uses-permission android:name="android.permission.RECORD_AUDIO" />
    <application
         android:label="talkback"
         android:name="${applicationName}"
