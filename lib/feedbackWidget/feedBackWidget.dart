@@ -72,7 +72,10 @@ class FeedBackWidgetState extends State<FeedBackWidget>
         onTap: () {
           showOverlay(context);
         },
-        child: const Text('press'));
+        child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.all(20),
+            child: const Text('press')));
   }
 
   @override

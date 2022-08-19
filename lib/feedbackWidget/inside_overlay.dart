@@ -1,110 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import 'package:talkback/main_api/mainapi.dart';
+import 'package:talkback/main_api/refreshttext.dart';
 
-class InsideOverlay extends StatefulWidget {
+class InsideOverlay extends StatelessWidget {
   final BoxConstraints boxConstraints;
   final void Function()? onpressed;
 
   const InsideOverlay({Key? key, required this.boxConstraints, this.onpressed})
       : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return InsideOverlayState();
-  }
-}
-
-class InsideOverlayState extends State<InsideOverlay> {
-  MainApi mainApi = MainApi();
-  bool userDispose = false;
-  String text = '';
-
-  @override
-  void initState() {
-    print('init done');
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    if (!userDispose) {
-      mainApi.dispose();
-    }
-  }
+//   @override
+//   State<StatefulWidget> createState() {
+//     // TODO: implement createState
+//     return InsideOverlayState();
+//   }
+// }
+//
+// class InsideOverlayState extends State<InsideOverlay> {
+//
+//
+//
+//
+//   @override
+//   void initState() {
+//     print('init done');
+//     super.initState();
+//   }
+//
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.blue.shade200,
-              borderRadius: BorderRadius.circular(10)),
-          height: widget.boxConstraints.maxHeight - 100,
-          width: widget.boxConstraints.maxWidth,
-          child: Center(
-            child: SingleChildScrollView(
-                padding: const EdgeInsets.all(15),
-                child: StreamBuilder(
-                  initialData: 'Text will appear here',
-                  stream: mainApi.getStream(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) {
-                    if (snapshot.data!.compareTo('Text will appear here') == 0){
-                      return const Text(
-                        'Text will appear here',
-                        style: TextStyle(
-                            decoration: TextDecoration.none, fontSize: 14),
-                      );
-                    }
-                      text = text + snapshot.data!;
-                    return Text(
-                      text,
-                      style: const TextStyle(
-                          decoration: TextDecoration.none, fontSize: 14),
-                    );
-                  },
-                )),
-          ),
-        ),
-        Container(
-          height: 50,
-          padding: const EdgeInsets.all(10),
-          child: const SpinKitPulse(
-            color: Colors.black,
-            size: 30,
-            duration: Duration(milliseconds: 700),
-          ),
-        ),
-        SizedBox(
-          height: 50,
-          width: widget.boxConstraints.maxWidth,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              BottomButton(
-                  onpressed: () {
-                    setState(() {
+    return ChangeNotifierProvider(
+      create: (BuildContext ctx) => RefreshText(),
+      builder: (cnp,_){
+        return Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.blue.shade200,
+                  borderRadius: BorderRadius.circular(10)),
+              height: boxConstraints.maxHeight - 100,
+              width: boxConstraints.maxWidth,
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(15),
+                  child: Consumer<RefreshText>(builder: (cnp,b,c){
+                    return StreamTextWidget();
+                  },),
+                ),
+              ),
+            ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.all(10),
+              child: const SpinKitPulse(
+                color: Colors.black,
+                size: 30,
+                duration: Duration(milliseconds: 700),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+              width: boxConstraints.maxWidth,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  BottomButton(onpressed: () {
 
-                      text = '';mainApi = MainApi();
-                    });
-                  },
-                  text: 'Restart'),
-              BottomButton(
-                  onpressed: () async {
-                    await mainApi.dispose();
-                    userDispose = true;
-                    widget.onpressed!();
-                  },
-                  text: 'OK')
-            ],
-          ),
-        )
-      ],
+                    Provider.of<RefreshText>(cnp,listen: false).refresh();
+
+                  }, text: 'Restart'),
+                  BottomButton(
+                      onpressed: () async {
+                        onpressed!();
+                      },
+                      text: 'OK')
+                ],
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }
@@ -133,6 +116,56 @@ class BottomButton extends StatelessWidget {
               color: Colors.white),
         ),
       ),
+    );
+  }
+}
+
+class StreamTextWidget extends StatefulWidget {
+  const StreamTextWidget({Key? key}) : super(key: key);
+  @override
+  State<StreamTextWidget> createState() => _StreamTextWidgetState();
+}
+
+class _StreamTextWidgetState extends State<StreamTextWidget> {
+
+  late int x;
+
+  @override
+  void initState() {
+    x=0;
+super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String text = '';
+    x++;
+    print(x);
+    if(x>4) {
+      return  const Text(
+        'Not allowed more than 3 times',
+        style: TextStyle(decoration: TextDecoration.none, fontSize: 14),
+      );
+    }
+    return StreamBuilder<String>(
+      key: Key(x.toString()),
+      initialData: 'Please start speaking',
+      stream: MainApi.getStream(),
+      builder: (BuildContext ctx, AsyncSnapshot<String> snapshot) {
+        if (snapshot.data!.compareTo('Please start speaking') == 0) {
+          return const Text(
+            'Please start speaking',
+            style: TextStyle(decoration: TextDecoration.none, fontSize: 14),
+          );
+        }
+
+        text = text + snapshot.data!;
+
+        return Text(
+          text,
+          style: const TextStyle(decoration: TextDecoration.none, fontSize: 14),
+        );
+      },
     );
   }
 }

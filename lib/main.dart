@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
     // TODO: implement build
     return Scaffold(
       body: Container(alignment: Alignment.center,
-      color: Colors.green.shade300,
+      color: Colors.black,
         child: const FeedBackWidget(),
 
       ),

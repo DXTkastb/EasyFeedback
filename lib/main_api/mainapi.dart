@@ -5,7 +5,7 @@ import 'package:talkback/grpc_client/my_client.dart';
 
 class MainApi{
 
-  List<String> list=['Hi ','my ','name ','is ','Kaustubh !'];
+  static List<String> list=['Hi ','my ','name ','is ','Kaustubh !'];
   var random= Random();
 
   bool _isStarted = false;
@@ -28,9 +28,10 @@ class MainApi{
     // }
   }
 
-  Stream<String> getStream() async* {
+  static Stream<String> getStream() async* {
     for (String element in list) {
-      await Future.delayed( Duration(milliseconds: random.nextInt(2000)));
+      // print('list element:'+element);
+      await Future.delayed( const Duration(milliseconds: 500));
       yield element;
     }
   }

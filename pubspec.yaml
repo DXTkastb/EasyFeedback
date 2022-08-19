@@ -37,6 +37,7 @@ dependencies:
   google_speech: ^2.1.1
   grpc: ^3.0.2
   mic_stream: ^0.6.1
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
