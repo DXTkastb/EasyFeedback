@@ -51,7 +51,7 @@ class InsideOverlay extends StatelessWidget {
               child: Center(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(15),
-                  child: Consumer<RefreshText>(builder: (cnp,b,c){
+                  child: Consumer<RefreshText>(builder: (cnp2,b,c){
                     return StreamTextWidget();
                   },),
                 ),
@@ -121,7 +121,7 @@ class BottomButton extends StatelessWidget {
 }
 
 class StreamTextWidget extends StatefulWidget {
-  const StreamTextWidget({Key? key}) : super(key: key);
+  // const StreamTextWidget({Key? key}) : super(key: key);
   @override
   State<StreamTextWidget> createState() => _StreamTextWidgetState();
 }

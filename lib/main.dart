@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talkback/audio_manager/audioApi.dart';
 import 'package:talkback/feedbackWidget/feedBackWidget.dart';
 
 void main() {
@@ -38,7 +39,35 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Container(alignment: Alignment.center,
       color: Colors.black,
-        child: const FeedBackWidget(),
+        child:
+        Container(
+          margin: const EdgeInsets.all(50),
+          child:
+         Column(
+           mainAxisAlignment: MainAxisAlignment.spaceAround,
+           children: [ TextButton(onPressed: () {
+             AudioApi.api.authinit();
+             //  AudioApi.api.output();
+
+
+           },child : const Text('Press')),
+             TextButton(onPressed: () {
+
+              Stream<String> stream = AudioApi.api.output();
+              stream.listen((event) {print(event);});
+
+             },child : const Text('Press')),
+             TextButton(onPressed: () {
+
+               AudioApi.api.cancelSubscription();
+
+
+             },child : const Text('cancel')),
+           ],
+         )
+        )
+
+        // const FeedBackWidget(),
 
       ),
     );
