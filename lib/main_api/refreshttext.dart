@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:talkback/audio_manager/audioApi.dart';
 
 class RefreshText extends ChangeNotifier{
-  void refresh(){
+  Future<void> refresh() async {
+    await AudioApi.api.cancelSubscription();
     notifyListeners();
   }
 }

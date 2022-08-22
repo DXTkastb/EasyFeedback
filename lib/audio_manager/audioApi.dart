@@ -25,36 +25,55 @@ class AudioApi {
   AudioApi._constructor();
 
   static final AudioApi api = AudioApi._constructor();
-
-  Future<void> authinit() async {
+  Future<void> loadKeyAuth() async {
     auth = ServiceAccount.fromString(
         await rootBundle.loadString("asset/cred.json"));
     acc = SpeechToText.viaServiceAccount(auth);
     streamconfig =
         StreamingRecognitionConfig(config: config, interimResults: false);
+  }
+  Future<void> authinit() async {
+
     stream = (await MicStream.microphone(
             audioSource: AudioSource.MIC,
             sampleRate: 44100,
             channelConfig: ChannelConfig.CHANNEL_IN_MONO,
             audioFormat: AudioFormat.ENCODING_PCM_16BIT)
-        .timeout(const Duration(seconds: 14))) as Stream<List<int>>;
+        ) as Stream<List<int>>;
   }
-
+  static Stream<String> getStream() async* {
+    var list =('ABCDEFGHIJKL').split('');
+    for (String element in list) {
+      // print('list element:'+element);
+      await Future.delayed( const Duration(milliseconds: 500));
+      yield element;
+    }
+  }
   Stream<String> output() {
     streamController = StreamController<String>();
+
     var responseStream =
-        (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
+   getStream();
+
+        // (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
     subscription = responseStream.listen((data) {
-      for (var element in data.results) {
-        streamController.add(element.alternatives.first.transcript);
-      }
+      streamController.add(data);
+
+      // for (var element in data.results) {
+      //   streamController.add(element.alternatives.first.transcript);
+      // }
+
     });
     return streamController.stream;
   }
-
+  Future<void> cancelAll() async{
+    await cancelSubscription();
+    stream=null;
+  }
   Future<void> cancelSubscription() async {
-    await streamController.close();
+    if(!(streamController.isClosed))
     await subscription.cancel();
-    stream = null;
+    await streamController.close();
+
   }
 }
