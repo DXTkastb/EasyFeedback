@@ -1,10 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:talkback/feedbackWidget/inside_overlay.dart';
+import 'inside_overlay.dart';
 
 class FeedBackWidget extends StatefulWidget {
-  const FeedBackWidget({Key? key}) : super(key: key);
+  final vendrID;
+  final int ordernumber;
+
+  const FeedBackWidget({Key? key, this.vendrID, this.ordernumber = -1})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -14,9 +18,11 @@ class FeedBackWidget extends StatefulWidget {
 
 class FeedBackWidgetState extends State<FeedBackWidget>
     with SingleTickerProviderStateMixin {
+  late bool feedbackCompleted;
+
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
-    reverseDuration: const Duration(milliseconds: 200),
+    reverseDuration: const Duration(milliseconds: 35),
     vsync: this,
   );
   late final Animation<double> _animation = CurvedAnimation(
@@ -34,11 +40,18 @@ class FeedBackWidgetState extends State<FeedBackWidget>
   }
 
   Future<void> onDone() async {
-  await _controller.reverse();
-  if (overlayState.mounted) {
-  overlayEntry.remove();
+    await _controller.reverse();
+    if (overlayState.mounted) {
+      overlayEntry.remove();
+    }
+    if (mounted) {
+      setState(() {
+        if(!feedbackCompleted) {
+          feedbackCompleted = true;
+        }
+      });
+    }
   }
-}
 
   OverlayEntry getOverLay() {
     return OverlayEntry(
@@ -46,16 +59,20 @@ class FeedBackWidgetState extends State<FeedBackWidget>
           return FadeTransition(
             opacity: _animation,
             child: Container(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withOpacity(0.55),
               alignment: Alignment.bottomCenter,
               child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                   child: SafeArea(
                     child: Padding(
                       padding: const EdgeInsets.all(30),
                       child: LayoutBuilder(
                         builder: (ctx, cons) {
-                          return InsideOverlay(boxConstraints: cons,onpressed: onDone,);
+                          return InsideOverlay(
+                            boxConstraints: cons,
+                            onpressed: onDone,
+                            vendorID: widget.vendrID,
+                          );
                         },
                       ),
                     ),
@@ -69,13 +86,31 @@ class FeedBackWidgetState extends State<FeedBackWidget>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          showOverlay(context);
-        },
-        child: Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(20),
-            child: const Text('press')));
+      onTap:(feedbackCompleted)?null: () {
+        showOverlay(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(boxShadow:(feedbackCompleted)?null: const [
+
+          BoxShadow(
+            color: Colors.blueAccent,
+            blurRadius: 13,
+            spreadRadius: 0.12,
+          )
+        ], color: (feedbackCompleted)?Colors.white60:Colors.white, borderRadius: BorderRadius.circular(25)),
+        alignment: Alignment.center,
+        width: 100,
+        height: 70,
+        child: const Text(
+          "TAP",
+          style: TextStyle(
+              decoration: TextDecoration.none,
+              fontWeight: FontWeight.w900,
+              fontSize: 15,
+              color: Colors.black),
+        ),
+      ),
+    );
   }
 
   @override
@@ -86,6 +121,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
 
   @override
   void initState() {
+    feedbackCompleted = false;
     super.initState();
   }
 }
