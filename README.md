@@ -1,16 +1,12 @@
-# talkback
+# EasyFeedback
 
-A new Flutter project.
+A utility widget that can be integrated into apps that require feedback from customers.
 
-## Getting Started
+## Intro
 
-This project is a starting point for a Flutter application.
+- App uses Google Cloud Speech-To-Text Api to collect feedback data via user audio in real time. 
+- The data collected is sent to backend where it is processed with GCP Natural Language Api and stored in database.
+- Natural Language Api helps us to retrieve useful information about speech data such as user likes/dislikes/rating.
+- Businesses/Organisations can view feedbacks, provided by users, using web app(link).
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
