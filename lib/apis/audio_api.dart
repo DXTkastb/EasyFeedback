@@ -17,6 +17,9 @@ class AudioApi {
   late Stream<List<int>>? stream;
   late StreamSubscription subscription;
   late StreamController<String> streamController;
+  late StreamSubscription<List<int>> st;
+  late StreamController<List<int>> sc;
+  Stream<StreamingRecognizeResponse>? responseStream;
 
   static final config = RecognitionConfig(
       encoding: AudioEncoding.LINEAR16,
@@ -38,17 +41,26 @@ class AudioApi {
   }
 
   Future<void> authInit() async {
-    stream = (await MicStream.microphone(
-        audioSource: AudioSource.MIC,
-        sampleRate: 44100,
-        channelConfig: ChannelConfig.CHANNEL_IN_MONO,
-        audioFormat: AudioFormat.ENCODING_PCM_16BIT)) as Stream<List<int>>;
+    sc = StreamController();
+    st = ((await MicStream.microphone(
+            audioSource: AudioSource.MIC,
+            sampleRate: 44100,
+            channelConfig: ChannelConfig.CHANNEL_IN_MONO,
+            audioFormat: AudioFormat.ENCODING_PCM_16BIT)) as Stream<List<int>>)
+        .listen((event) {
+          if(!sc.isClosed) sc.add(event);
+    });
   }
 
-  Stream<StreamingRecognizeResponse> realAudioStream() {
-    var responseStream =
-        (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
-    return responseStream;
+  AudioApi initRealAudioStream() {
+    responseStream ??= ((acc as SpeechToText).streamingRecognize(streamconfig, sc.stream)).asBroadcastStream();
+    return this;
+  }
+
+  void closeAllConnections() {
+    st.cancel();
+    sc.close();
+    responseStream = null;
   }
 
   /*
@@ -69,7 +81,7 @@ class AudioApi {
     }
   }
 
-  Stream<String> controllerStreamSpeechData() {
+  Stream<String> controllerStreamSpeechDatas() {
     streamController = StreamController<String>();
 
     var responseStream =
@@ -82,7 +94,7 @@ class AudioApi {
     return streamController.stream;
   }
 
-  Stream<String> testControllerStreamOutput() {
+  Stream<String> testControllerStreamOutputs() {
     streamController = StreamController<String>();
 
     var responseStream = AudioApi.api.getForControllerTestStream(); //test
@@ -94,6 +106,8 @@ class AudioApi {
 
   // for controller streams
   Future<void> cancelAll() async {
+    print('cancelling audio streaming!');
+
     await cancelSubscription();
     stream = null;
   }

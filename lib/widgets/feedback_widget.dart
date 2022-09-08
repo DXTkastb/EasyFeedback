@@ -1,15 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:talkback/providers/user_provider.dart';
+import 'package:talkback/widgets/uploading_data_snackbar.dart';
 
+import '../apis/main_api.dart';
 import 'inside_overlay.dart';
 
 class FeedBackWidget extends StatefulWidget {
-  final vendrID;
-  final int ordernumber;
-
-  const FeedBackWidget({Key? key, this.vendrID, this.ordernumber = -1})
-      : super(key: key);
+  const FeedBackWidget({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,42 +19,39 @@ class FeedBackWidget extends StatefulWidget {
 
 class FeedBackWidgetState extends State<FeedBackWidget>
     with SingleTickerProviderStateMixin {
-  late bool feedbackCompleted;
-
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 300),
-    reverseDuration: const Duration(milliseconds: 35),
-    vsync: this,
-  );
-  late final Animation<double> _animation = CurvedAnimation(
-    parent: _controller,
-    curve: Curves.fastOutSlowIn,
-  );
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
   late OverlayEntry overlayEntry;
   late OverlayState overlayState;
+  String upiLink = '';
 
-  void showOverlay(BuildContext context) {
-    overlayEntry = getOverLay();
-    Overlay.of(context)!.insert(overlayEntry);
+  void showOverlay() {
+    overlayEntry = getOverLay(upiLink);
+    Overlay.of(context).insert(overlayEntry);
     _controller.forward();
-    overlayState = Overlay.of(context)!;
+    overlayState = Overlay.of(context);
   }
 
-  Future<void> onDone() async {
+  Future<void> onDone(String speechData) async {
     await _controller.reverse();
     if (overlayState.mounted) {
       overlayEntry.remove();
     }
-    if (false) {
-      setState(() {
-        if (!feedbackCompleted) {
-          feedbackCompleted = true;
-        }
-      });
+    var link = upiLink;
+    if (mounted && upiLink.isNotEmpty) upiLink = '';
+    if (mounted && speechData.isNotEmpty) {
+      String phoneNum =
+          Provider.of<UserProvider>(context, listen: false).phoneNumber;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: DataUploadSnackBar(
+        speech: speechData,
+        link: link,
+        phoneNum: phoneNum,
+      )));
     }
   }
 
-  OverlayEntry getOverLay() {
+  OverlayEntry getOverLay(String upiLink) {
     return OverlayEntry(
         builder: (overlayContext) {
           return FadeTransition(
@@ -72,7 +69,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
                           return InsideOverlay(
                             boxConstraints: cons,
                             onpressed: onDone,
-                            vendorID: widget.vendrID,
+                            upiLink: upiLink,
                           );
                         },
                       ),
@@ -87,35 +84,49 @@ class FeedBackWidgetState extends State<FeedBackWidget>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (feedbackCompleted)
-          ? null
-          : () {
-              showOverlay(context);
-            },
+      onTap: () async {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        final val =  await (Navigator.of(context).pushNamed("scan-qr"));
+        if ((mounted && val != null)) {
+          upiLink = val as String;
+          // check upi with backend db while a circular indicator works
+          // once checked push the overlay
+          showOverlay();
+        }
+      },
       child: Container(
         decoration: BoxDecoration(
-            boxShadow: (feedbackCompleted)
-                ? null
-                : const [
-                    BoxShadow(
-                      color: Colors.white,
-                      blurRadius: 30,
-                      spreadRadius: 0.5,
-                    )
-                  ],
-            color:
-                (feedbackCompleted) ? Colors.white60 : Colors.lightBlueAccent,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.white,
+                blurRadius: 30,
+                spreadRadius: 0.5,
+              )
+            ],
+            color: Colors.lightBlueAccent,
             borderRadius: BorderRadius.circular(45)),
         alignment: Alignment.center,
-        width: 100,
+        width: 120,
         height: 70,
-        child: const Text(
-          "TAP",
-          style: TextStyle(
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.w900,
-              fontSize: 16,
-              color: Colors.black),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.qr_code_scanner_sharp,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "SCAN",
+              style: TextStyle(
+                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                  color: Colors.black),
+            )
+          ],
         ),
       ),
     );
@@ -129,7 +140,15 @@ class FeedBackWidgetState extends State<FeedBackWidget>
 
   @override
   void initState() {
-    feedbackCompleted = false;
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      reverseDuration: const Duration(milliseconds: 35),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.fastOutSlowIn,
+    );
   }
 }

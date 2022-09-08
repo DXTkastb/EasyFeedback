@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/speech_data_provider.dart';
 class LinearIndicator extends StatefulWidget {
   const LinearIndicator({Key? key}) : super(key: key);
 
@@ -7,7 +9,6 @@ class LinearIndicator extends StatefulWidget {
   State<LinearIndicator> createState() => _MyStatefulWidgetState();
 }
 
-/// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 class _MyStatefulWidgetState extends State<LinearIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
@@ -19,8 +20,7 @@ class _MyStatefulWidgetState extends State<LinearIndicator>
       duration: const Duration(seconds: 50),
     )..addListener(() {
         setState(() {});
-      });
-    controller.repeat(reverse: false);
+      })..forward();
     super.initState();
   }
 
