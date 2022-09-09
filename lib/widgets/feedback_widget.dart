@@ -89,15 +89,15 @@ class FeedBackWidgetState extends State<FeedBackWidget>
       onTap:(feedbackCompleted)?null: () {
         showOverlay(context);
       },
-      child: Container(
+      child:  Container(
         decoration: BoxDecoration(boxShadow:(feedbackCompleted)?null: const [
 
           BoxShadow(
-            color: Colors.blueAccent,
-            blurRadius: 13,
-            spreadRadius: 0.12,
+            color: Colors.white,
+            blurRadius: 45,
+            spreadRadius: 0.5,
           )
-        ], color: (feedbackCompleted)?Colors.white60:Colors.white, borderRadius: BorderRadius.circular(25)),
+        ], color: (feedbackCompleted)?Colors.white60:Colors.lightBlueAccent, borderRadius: BorderRadius.circular(45)),
         alignment: Alignment.center,
         width: 100,
         height: 70,
@@ -106,7 +106,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
           style: TextStyle(
               decoration: TextDecoration.none,
               fontWeight: FontWeight.w900,
-              fontSize: 15,
+              fontSize: 16,
               color: Colors.black),
         ),
       ),

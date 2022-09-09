@@ -8,7 +8,6 @@ import 'package:google_speech/config/streaming_recognition_config.dart';
 import 'package:google_speech/generated/google/cloud/speech/v1/cloud_speech.pb.dart' show StreamingRecognizeResponse;
 import 'package:google_speech/speech_client_authenticator.dart';
 import 'package:google_speech/speech_to_text.dart';
-import 'package:http/http.dart';
 import 'package:mic_stream/mic_stream.dart';
 
 class AudioApi {
