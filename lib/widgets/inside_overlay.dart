@@ -153,7 +153,7 @@ class BottomButton extends StatelessWidget {
 class StreamTextWidget extends StatefulWidget {
   final vendorId;
 
-  const StreamTextWidget(this.vendorId);
+  const StreamTextWidget(this.vendorId, {Key? key}) : super(key: key);
 
   @override
   State<StreamTextWidget> createState() => _StreamTextWidgetState();
