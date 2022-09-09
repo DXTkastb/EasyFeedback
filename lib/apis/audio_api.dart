@@ -54,7 +54,7 @@ class AudioApi {
 
   /*
 
-  CODE BELOW THIS IS FOR TESTING PURPOSES --------------------------------------
+  CODE BELOW IS FOR TESTING PURPOSES --------------------------------------
 
    */
 
@@ -66,7 +66,6 @@ class AudioApi {
 
     var list = (message).split(' ');
     for (String element in list) {
-      // print('list element:'+element);
       await Future.delayed(const Duration(milliseconds: 500));
       yield element;
     }
