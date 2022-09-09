@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
 import 'inside_overlay.dart';
 
 class FeedBackWidget extends StatefulWidget {
@@ -46,7 +47,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
     }
     if (mounted) {
       setState(() {
-        if(!feedbackCompleted) {
+        if (!feedbackCompleted) {
           feedbackCompleted = true;
         }
       });
@@ -86,18 +87,25 @@ class FeedBackWidgetState extends State<FeedBackWidget>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:(feedbackCompleted)?null: () {
-        showOverlay(context);
-      },
-      child:  Container(
-        decoration: BoxDecoration(boxShadow:(feedbackCompleted)?null: const [
-
-          BoxShadow(
-            color: Colors.white,
-            blurRadius: 45,
-            spreadRadius: 0.5,
-          )
-        ], color: (feedbackCompleted)?Colors.white60:Colors.lightBlueAccent, borderRadius: BorderRadius.circular(45)),
+      onTap: (feedbackCompleted)
+          ? null
+          : () {
+              showOverlay(context);
+            },
+      child: Container(
+        decoration: BoxDecoration(
+            boxShadow: (feedbackCompleted)
+                ? null
+                : const [
+                    BoxShadow(
+                      color: Colors.white,
+                      blurRadius: 45,
+                      spreadRadius: 0.5,
+                    )
+                  ],
+            color:
+                (feedbackCompleted) ? Colors.white60 : Colors.lightBlueAccent,
+            borderRadius: BorderRadius.circular(45)),
         alignment: Alignment.center,
         width: 100,
         height: 70,

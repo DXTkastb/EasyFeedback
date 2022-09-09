@@ -52,7 +52,6 @@ class MyHomePage extends StatelessWidget {
                   textScaleFactor: 3.2,
                   style: TextStyle(
                     fontWeight: FontWeight.w900,
-                    // color: const Color.fromRGBO(220, 220, 220, 1.0),
                     foreground: Paint()..shader = linearGradient
                   ),
                 ),

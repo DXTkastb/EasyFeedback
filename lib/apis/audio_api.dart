@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:google_speech/config/recognition_config.dart';
 import 'package:google_speech/config/recognition_config_v1.dart';
 import 'package:google_speech/config/streaming_recognition_config.dart';
-import 'package:google_speech/generated/google/cloud/speech/v1/cloud_speech.pb.dart' show StreamingRecognizeResponse;
+import 'package:google_speech/generated/google/cloud/speech/v1/cloud_speech.pb.dart'
+    show StreamingRecognizeResponse;
 import 'package:google_speech/speech_client_authenticator.dart';
 import 'package:google_speech/speech_to_text.dart';
 import 'package:mic_stream/mic_stream.dart';
@@ -37,8 +37,6 @@ class AudioApi {
         StreamingRecognitionConfig(config: config, interimResults: true);
   }
 
-
-
   Future<void> authInit() async {
     stream = (await MicStream.microphone(
         audioSource: AudioSource.MIC,
@@ -48,7 +46,8 @@ class AudioApi {
   }
 
   Stream<StreamingRecognizeResponse> realAudioStream() {
-    var responseStream =  (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
+    var responseStream =
+        (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
     return responseStream;
   }
 
@@ -58,8 +57,7 @@ class AudioApi {
 
    */
 
-
-   Stream<String> getForControllerTestStream() async* {
+  Stream<String> getForControllerTestStream() async* {
     String message =
         "Pasta was delicious. It was creamy and had just the right amount of cheese. "
         " I order pasta frequently and I am never disappointed.The ambience had a positive vibe and other customers also looked satisfied. The only thing which I disliked was Green salad ";
@@ -71,12 +69,12 @@ class AudioApi {
     }
   }
 
-
   Stream<String> controllerStreamSpeechData() {
     streamController = StreamController<String>();
 
-    var responseStream =  (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
-      subscription = responseStream.listen((data) {
+    var responseStream =
+        (acc as SpeechToText).streamingRecognize(streamconfig, stream!);
+    subscription = responseStream.listen((data) {
       for (var element in data.results) {
         streamController.add(element.alternatives.first.transcript);
       }

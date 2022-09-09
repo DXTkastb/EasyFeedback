@@ -20,7 +20,8 @@ class BackendApi {
           headers: {
             "Content-type": 'application/json',
           },
-          body: jsonEncode(data)); audioDat = '';
+          body: jsonEncode(data));
+      audioDat = '';
     }
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class LinearIndicator extends StatefulWidget {
   const LinearIndicator({Key? key}) : super(key: key);
+
   @override
   State<LinearIndicator> createState() => _MyStatefulWidgetState();
 }
@@ -17,8 +18,8 @@ class _MyStatefulWidgetState extends State<LinearIndicator>
       vsync: this,
       duration: const Duration(seconds: 50),
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
     controller.repeat(reverse: false);
     super.initState();
   }
@@ -31,11 +32,10 @@ class _MyStatefulWidgetState extends State<LinearIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return   LinearProgressIndicator(
+    return LinearProgressIndicator(
       color: Colors.black,
       value: controller.value,
       semanticsLabel: 'Linear progress indicator',
-    )
-    ;
+    );
   }
 }

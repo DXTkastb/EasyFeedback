@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_speech/generated/google/cloud/speech/v1/cloud_speech.pb.dart';
 import 'package:provider/provider.dart';
-import '/apis/main_api.dart';
 
-import '../apis/audio_api.dart';
-import '../providers/refreshttext.dart';
-import '../timer_indicator/timerindicator.dart';
+import '/apis/audio_api.dart';
+import '/apis/main_api.dart';
+import '/providers/refreshttext.dart';
+import '/timer_indicator/timerindicator.dart';
 
 class InsideOverlay extends StatefulWidget {
   final BoxConstraints boxConstraints;
