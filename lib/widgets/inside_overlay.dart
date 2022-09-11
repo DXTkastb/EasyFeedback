@@ -234,7 +234,13 @@ class _StreamTextWidgetState extends State<StreamTextWidget> {
         double stability = -1.0;
 
         if (snapshot.hasError) {
-          return const Text("SOME ERROR OCCURED.\nPLEASE TRY LATER");
+          return const Text(
+            "SOME ERROR OCCURED.\nPLEASE TRY LATER",
+            style: TextStyle(
+                decoration: TextDecoration.none,
+                fontSize: 14,
+                color: Color.fromRGBO(26, 29, 63, 1.0)),
+          );
         }
         if (snapshot.connectionState == ConnectionState.done) {
           return const Text(
