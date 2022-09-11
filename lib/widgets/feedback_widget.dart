@@ -45,7 +45,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
     if (overlayState.mounted) {
       overlayEntry.remove();
     }
-    if (mounted) {
+    if (false) {
       setState(() {
         if (!feedbackCompleted) {
           feedbackCompleted = true;
