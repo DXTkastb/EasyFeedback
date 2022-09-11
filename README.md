@@ -17,3 +17,9 @@ A utility widget that can be integrated into apps that require feedback from cus
 - open cmd/terminal :
 - 'flutter run' to test app in emulator/physical device
 - 'flutter build apk' to build apk. Generated apk can be installed on android device.
+
+### Screenshots
+
+![](/home/kaustubh/Documents/PROJECTS/FEEDBACK/Project_FEEDBACK/android/attachments/s1.jpg)
+
+![](/home/kaustubh/Documents/PROJECTS/FEEDBACK/Project_FEEDBACK/android/attachments/s2.jpg)
