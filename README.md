@@ -19,3 +19,6 @@ A utility widget that can be integrated into apps that require feedback from cus
 - 'flutter build apk' to build apk. Generated apk can be installed on android device.
 
 ### Screenshots
+
+![s1](https://user-images.githubusercontent.com/38028330/189524598-db748022-29c2-42ea-be3e-aa749c5bbdae.jpg)
+![s2](https://user-images.githubusercontent.com/38028330/189524605-f3229294-f4dc-4251-bb37-3d0b72e0dfba.jpg)
