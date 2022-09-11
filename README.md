@@ -20,5 +20,5 @@ A utility widget that can be integrated into apps that require feedback from cus
 
 ### Screenshots
 
-![s1](https://user-images.githubusercontent.com/38028330/189524598-db748022-29c2-42ea-be3e-aa749c5bbdae.jpg)
-![s2](https://user-images.githubusercontent.com/38028330/189524605-f3229294-f4dc-4251-bb37-3d0b72e0dfba.jpg)
+![My project (2)](https://user-images.githubusercontent.com/38028330/189525047-f4067c13-5b79-48c1-a18b-c3e88941e21f.jpg)
+![My project (1)](https://user-images.githubusercontent.com/38028330/189525053-5199d48f-3a2d-44a5-b762-92fb85055a24.jpg)
