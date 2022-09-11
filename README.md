@@ -22,3 +22,5 @@ A utility widget that can be integrated into apps that require feedback from cus
 
 ![My project (2)](https://user-images.githubusercontent.com/38028330/189525047-f4067c13-5b79-48c1-a18b-c3e88941e21f.jpg)
 ![My project (1)](https://user-images.githubusercontent.com/38028330/189525053-5199d48f-3a2d-44a5-b762-92fb85055a24.jpg)
+
+Processed data from the feedback(in the above screenshot) can be viewed here: [Web App](https://github.com/DXTkastb/EasyFeedbackWeb#screenshots)
