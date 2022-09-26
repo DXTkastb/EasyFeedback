@@ -99,7 +99,7 @@ class FeedBackWidgetState extends State<FeedBackWidget>
                 : const [
                     BoxShadow(
                       color: Colors.white,
-                      blurRadius: 45,
+                      blurRadius: 30,
                       spreadRadius: 0.5,
                     )
                   ],
