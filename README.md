@@ -19,8 +19,12 @@ A utility widget that can be integrated into apps that require feedback from cus
 - 'flutter build apk' to build apk. Generated apk can be installed on android device.
 
 ### Screenshots
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/0af13ea7-c5cd-4690-8f16-9a65eb7f4742" width="410" height="800">
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/bab7d350-b602-4839-832b-36d77b776fef" width="410" height="800">
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/1b4cf624-98e6-4c5b-9339-7a7ae0842351" width="410" height="800">
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/792e6e3a-66f9-4778-b0e7-b964608a8b66" width="410" height="800">
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/e62be302-ba3d-47b1-8fd7-0edc90848fdd" width="410" height="800">
+<img src="https://github.com/DXTkastb/EasyFeedback/assets/38028330/4f4af042-a1b4-48a4-b10c-093eb6bace75" width="410" height="800">
 
-![My project (2)](https://user-images.githubusercontent.com/38028330/189525047-f4067c13-5b79-48c1-a18b-c3e88941e21f.jpg)
-![My project (1)](https://user-images.githubusercontent.com/38028330/189525053-5199d48f-3a2d-44a5-b762-92fb85055a24.jpg)
 
 Processed data from the feedback(in the above screenshot) can be viewed here: [Web App](https://github.com/DXTkastb/EasyFeedbackWeb#screenshots)
